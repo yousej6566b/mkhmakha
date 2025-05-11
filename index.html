@@ -1,179 +1,89 @@
-
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>اختيار الكروت</title>
+    <meta charset="UTF-8">
+    <title>مخمخها</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         body {
-            background-color: #f2f2f2;
+            margin: 0;
             font-family: 'Arial', sans-serif;
-            text-align: center;
             direction: rtl;
-        }
-        h1 {
-            font-size: 36px;
-            margin: 10px 0;
-        }
-        h2 {
-            font-size: 24px;
-            margin-bottom: 30px;
-        }
-        .cards {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 15px;
-            margin: 20px;
-        }
-        .card {
-            position: relative;
-            width: 150px;
-            height: 180px;
-            background-color: #ddd;
-            background-size: cover;
-            background-position: center;
-            border-radius: 12px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-        }
-        .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 10px rgba(0,0,0,0.3);
-        }
-        .card.selected {
-            border: 3px solid orange;
-        }
-        .card .info-icon {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            width: 25px;
-            height: 25px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 14px;
-            color: #333;
-        }
-        .card .label {
-            background-color: orange;
+            background: linear-gradient(to right, #ff3c00, #ffa44d);
             color: white;
-            font-size: 16px;
-            padding: 8px;
             text-align: center;
+        }
+        header {
+            background: #f2f2f2;
+            color: #000;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff3c00;
+        }
+        .nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+        .main {
+            margin-top: 60px;
+        }
+        .main h1 {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+        .main p {
+            font-size: 20px;
         }
         .start-button {
-            display: none;
-            background: linear-gradient(to right, red, orange);
-            color: white;
-            padding: 15px 40px;
-            font-size: 20px;
+            background-color: white;
+            color: #ff3c00;
             border: none;
+            font-size: 22px;
+            padding: 15px 30px;
+            margin-top: 40px;
             border-radius: 30px;
             cursor: pointer;
-            margin-top: 30px;
+            transition: 0.3s;
+        }
+        .start-button:hover {
+            background-color: #ffe3d1;
         }
     </style>
 </head>
 <body>
+    <header>
+        <div class="logo">مخمخها</div>
+        <div class="nav">
+            <a href="login.html">دخول</a>
+            <a href="#">تواصل معنا</a>
+            <a href="#">العب</a>
+        </div>
+    </header>
 
-    <h1 id="gameTitle">اسم اللعبة</h1>
-    <h2>اختر 6 كروت فقط</h2>
-    <div id="teams" style="margin-bottom: 20px; font-size: 18px;"></div>
+    <div class="main">
+        <h1>مخمخها</h1>
+        <p>الجواب عليك، والسؤال علينا!</p>
+        <p>٦ فئات، ٣٦ سؤال، ومعاهم وسائل مساعدة</p>
+        <button class="start-button" onclick="startGame()">ابدأ اللعبة</button>
+    </div>
+
     <script>
-        document.getElementById('gameTitle').textContent = localStorage.getItem('gameName') || 'اسم اللعبة';
-        document.getElementById('teams').textContent =
-            (localStorage.getItem('team1Name') || 'الفريق الأول') + " VS " +
-            (localStorage.getItem('team2Name') || 'الفريق الثاني');
-    </script>
-
-    <div class="cards" id="cards">
-        
-    <div class="card" style="background-image: url('images/kuwait.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">الكويت</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/saudi.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">السعودية</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/quran.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">القرآن</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/history.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">تاريخ</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/sports.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">رياضة</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/capitals.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">عواصم</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/science.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">علوم</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/art.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">فن</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/religion.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">دين</div>
-    </div>
-    
-    <div class="card" style="background-image: url('images/geo.jpg');">
-        <div class="info-icon">i</div>
-        <div class="label">جغرافيا</div>
-    </div>
-    
-    </div>
-
-    <button class="start-button" id="startBtn">ابدأ اللعب</button>
-    <script>
-        const cards = document.querySelectorAll('.card');
-        const startBtn = document.getElementById('startBtn');
-        let selectedCount = 0;
-
-        cards.forEach(card => {
-            card.addEventListener('click', () => {
-                if (card.classList.contains('selected')) {
-                    card.classList.remove('selected');
-                    selectedCount--;
-                } else if (selectedCount < 6) {
-                    card.classList.add('selected');
-                    selectedCount++;
-                }
-                startBtn.style.display = selectedCount === 6 ? 'inline-block' : 'none';
-            });
-        });
-
-        startBtn.addEventListener('click', () => {
-            const selectedCards = Array.from(document.querySelectorAll('.card.selected')).map(card => card.textContent.trim());
-            localStorage.setItem('selectedCards', JSON.stringify(selectedCards));
-            window.location.href = "game.html";
-        });
+        function startGame() {
+            const user = localStorage.getItem("user");
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                window.location.href = "index.html";
+            }
+        }
     </script>
 </body>
 </html>
