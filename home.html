@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مخمخها</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            direction: rtl;
+            background: linear-gradient(to right, #ff3c00, #ffa44d);
+            color: white;
+            text-align: center;
+        }
+        header {
+            background: #f2f2f2;
+            color: #000;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #ff3c00;
+        }
+        .nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+            font-weight: bold;
+        }
+        .main {
+            margin-top: 60px;
+        }
+        .main h1 {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+        .main p {
+            font-size: 20px;
+        }
+        .start-button {
+            background-color: white;
+            color: #ff3c00;
+            border: none;
+            font-size: 22px;
+            padding: 15px 30px;
+            margin-top: 40px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .start-button:hover {
+            background-color: #ffe3d1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">مخمخها</div>
+        <div class="nav">
+            <a href="login.html">دخول</a>
+            <a href="#">تواصل معنا</a>
+            <a href="#">العب</a>
+        </div>
+    </header>
+
+    <div class="main">
+        <h1>مخمخها</h1>
+        <p>الجواب عليك، والسؤال علينا!</p>
+        <p>٦ فئات، ٣٦ سؤال، ومعاهم وسائل مساعدة</p>
+        <button class="start-button" onclick="startGame()">ابدأ اللعبة</button>
+    </div>
+
+    <script>
+        function startGame() {
+            const user = localStorage.getItem("user");
+            if (!user) {
+                window.location.href = "login.html";
+            } else {
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>

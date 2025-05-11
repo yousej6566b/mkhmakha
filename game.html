@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>مخمخها - اللعبة</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      direction: rtl;
+      background-color: #f0f0f0;
+    }
+
+    header {
+      background: linear-gradient(to right, #ff3c00, #ffa44d);
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 20px;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      padding: 20px;
+    }
+
+    .category {
+      background-color: #dde;
+      text-align: center;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .category img {
+      width: 100%;
+      height: 100px;
+      object-fit: cover;
+    }
+
+    .category-name {
+      background-color: #ff6f00;
+      color: white;
+      padding: 5px;
+      font-weight: bold;
+    }
+
+    .points {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+    }
+
+    .point {
+      background-color: #eee;
+      padding: 10px;
+      font-size: 18px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #e0e0e0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      font-size: 18px;
+    }
+
+    .helpers {
+      display: flex;
+      gap: 20px;
+    }
+
+    .helpers button {
+      background-color: #555;
+      color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .score-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .score-control button {
+      background-color: #d00;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      font-size: 24px;
+      width: 35px;
+      height: 35px;
+      cursor: pointer;
+    }
+
+    .popup, .overlay {
+      display: none;
+    }
+
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 999;
+    }
+
+    .popup {
+      position: fixed;
+      top: 15%;
+      right: 0;
+      left: 0;
+      margin: auto;
+      max-width: 500px;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+      z-index: 1000;
+      text-align: center;
+    }
+
+    .popup .timer {
+      font-size: 28px;
+      color: red;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+
+<script>
+  const selected = JSON.parse(localStorage.getItem("selectedCards") || "[]");
+  if (!selected.length) {
+    alert("لم يتم اختيار كروت! سيتم تحويلك إلى صفحة البداية.");
+    window.location.href = "index.html";
+  }
+</script>
+
+
+<header>
+  <span>مخمخها</span>
+  <span>دور الفريق: <strong id="currentTeam">الفريق 1</strong></span>
+</header>
+
+<div class="board" id="gameBoard"></div>
+
+<footer>
+  <div class="score-control">
+    <div style="background-color: red; padding: 5px 20px; border-radius: 30px;">الفريق 1</div>
+  </div>
+
+  <div class="helpers">
+    <button onclick="useHelper('change')">🌀 تغيير السؤال</button>
+    <button onclick="useHelper('call')">📞 الاتصال بصديق</button>
+    <button onclick="useHelper('search')">🔍 بحث</button>
+  </div>
+
+  <div class="score-control">
+    <button onclick="adjustScore(-100)">-</button>
+    <span id="score" style="font-size: 22px;">0</span>
+    <button onclick="adjustScore(100)">+</button>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay" onclick="closePopup()"></div>
+<div class="popup" id="popup">
+  <h2 id="popupTitle">السؤال</h2>
+  <div class="timer" id="timer">60</div>
+  <p id="popupQuestion">...</p>
+  <button onclick="showAnswer()">إظهار الإجابة</button>
+  <p id="popupAnswer" style="display:none;"></p>
+</div>
+
+<script>
+  const allCategories = {
+  "الكويت": "https://via.placeholder.com/150x100?text=الكويت",
+  "السعودية": "https://via.placeholder.com/150x100?text=السعودية",
+  "القرآن": "https://via.placeholder.com/150x100?text=القرآن",
+  "تاريخ": "https://via.placeholder.com/150x100?text=تاريخ",
+  "رياضة": "https://via.placeholder.com/150x100?text=رياضة",
+  "عواصم": "https://via.placeholder.com/150x100?text=عواصم",
+  "علوم": "https://via.placeholder.com/150x100?text=علوم",
+  "فن": "https://via.placeholder.com/150x100?text=فن",
+  "دين": "https://via.placeholder.com/150x100?text=دين",
+  "جغرافيا": "https://via.placeholder.com/150x100?text=جغرافيا",
+};
+
+  const selected = JSON.parse(localStorage.getItem("selectedCards") || "[]");
+  const board = document.getElementById("gameBoard");
+
+  selected.forEach(cat => {
+    const image = allCategories[cat] || "https://via.placeholder.com/150x100?text=" + encodeURIComponent(cat);
+    const div = document.createElement("div");
+    div.className = "category";
+    div.innerHTML = \`
+      <img src="\${image}" />
+      <div class="category-name">\${cat}</div>
+      <div class="points">
+        <div class="point" onclick="askQuestion('\${cat}', 200)">200</div>
+        <div class="point" onclick="askQuestion('\${cat}', 400)">400</div>
+        <div class="point" onclick="askQuestion('\${cat}', 600)">600</div>
+      </div>
+    \`;
+    board.appendChild(div);
+  });
+
+  let timer;
+  let timeLeft = 60;
+
+  function askQuestion(cat, points) {
+    document.getElementById("popupTitle").textContent = \`\${cat} - \${points} نقطة\`;
+    document.getElementById("popupQuestion").textContent = "هذا سؤال للفئة " + cat + " بمستوى " + points;
+    document.getElementById("popupAnswer").style.display = "none";
+    document.getElementById("popupAnswer").textContent = "الإجابة النموذجية هنا...";
+    document.getElementById("overlay").style.display = "block";
+    document.getElementById("popup").style.display = "block";
+    timeLeft = 60;
+    document.getElementById("timer").textContent = timeLeft;
+    clearInterval(timer);
+    timer = setInterval(() => {
+      timeLeft--;
+      document.getElementById("timer").textContent = timeLeft;
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        showAnswer();
+      }
+    }, 1000);
+  }
+
+  function showAnswer() {
+    clearInterval(timer);
+    document.getElementById("popupAnswer").style.display = "block";
+  }
+
+  function closePopup() {
+    clearInterval(timer);
+    document.getElementById("popup").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+  }
+
+  function adjustScore(val) {
+    const scoreEl = document.getElementById("score");
+    let score = parseInt(scoreEl.textContent);
+    score += val;
+    if (score < 0) score = 0;
+    scoreEl.textContent = score;
+  }
+
+  function useHelper(type) {
+    askQuestion("مساعدة", 0);
+  }
+</script>
+</body>
+</html>

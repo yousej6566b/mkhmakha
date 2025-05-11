@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Register - Mkhmakha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(to right, #ff3c00, #ffa44d);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 12px;
+            width: 80%;
+            max-width: 300px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: white;
+            color: #ff3c00;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #ffe3d1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Register</h1>
+    <p>Create a new account to play</p>
+    <input type="text" id="fullname" placeholder="Full Name (English only)" />
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Password" />
+    <input type="date" id="birthdate" placeholder="Birth Date" />
+    <input type="number" id="age" placeholder="Age" min="5" max="100" />
+    <button onclick="register()">Create Account</button>
+
+    <script>
+        function register() {
+            const fullname = document.getElementById("fullname").value.trim();
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const password = document.getElementById("password").value.trim();
+            const birthdate = document.getElementById("birthdate").value;
+            const age = document.getElementById("age").value;
+
+            if (!fullname || !email || !password || !birthdate || !age) {
+                alert("Please fill all fields.");
+                return;
+            }
+
+            let users = JSON.parse(localStorage.getItem("users") || "{}");
+
+            if (users[email]) {
+                alert("This email is already registered.");
+                return;
+            }
+
+            users[email] = {
+                fullname,
+                password,
+                birthdate,
+                age
+            };
+
+            localStorage.setItem("users", JSON.stringify(users));
+            localStorage.setItem("user", email);
+            alert("Account created successfully!");
+            window.location.href = "home.html";
+        }
+    </script>
+</body>
+</html>

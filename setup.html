@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>إعداد اللعبة</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #fff;
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 10px;
+            width: 250px;
+            font-size: 16px;
+            border-radius: 20px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            text-align: center;
+        }
+        .row {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+        }
+        .team {
+            width: 200px;
+        }
+        button {
+            background: linear-gradient(to left, #ff5722, #ff9800);
+            color: white;
+            font-size: 20px;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>حدد معلومات الفرق</h1>
+    <div class="section">
+        <input type="text" id="gameName" placeholder="اسم اللعبة">
+    </div>
+    <div class="row">
+        <div class="team">
+            <h2>الفريق الأول</h2>
+            <input type="text" id="team1Name" placeholder="اسم الفريق"><br>
+            <input type="number" id="team1Players" min="1" max="6" value="1">
+        </div>
+        <div class="team">
+            <h2>الفريق الثاني</h2>
+            <input type="text" id="team2Name" placeholder="اسم الفريق"><br>
+            <input type="number" id="team2Players" min="1" max="6" value="1">
+        </div>
+    </div>
+    <div class="section">
+        <button onclick="startGame()">ابدأ اللعب</button>
+    </div>
+
+    <script>
+        function startGame() {
+            const gameName = document.getElementById('gameName').value.trim();
+            const team1Name = document.getElementById('team1Name').value.trim();
+            const team2Name = document.getElementById('team2Name').value.trim();
+            const team1Players = document.getElementById('team1Players').value;
+            const team2Players = document.getElementById('team2Players').value;
+
+            if (!gameName || !team1Name || !team2Name) {
+                alert("يرجى إدخال جميع البيانات");
+                return;
+            }
+
+            localStorage.setItem('gameName', gameName);
+            localStorage.setItem('team1Name', team1Name);
+            localStorage.setItem('team2Name', team2Name);
+            localStorage.setItem('team1Players', team1Players);
+            localStorage.setItem('team2Players', team2Players);
+
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

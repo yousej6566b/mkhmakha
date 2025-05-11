@@ -1,0 +1,71 @@
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Mkhmakha</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background: linear-gradient(to right, #ff3c00, #ffa44d);
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 40px;
+        }
+        h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 12px;
+            width: 80%;
+            max-width: 300px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        button {
+            padding: 12px 30px;
+            font-size: 20px;
+            border: none;
+            border-radius: 25px;
+            background-color: white;
+            color: #ff3c00;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #ffe3d1;
+        }
+    </style>
+</head>
+<body>
+    <h1>Login</h1>
+    <p>Please enter your email and password to continue</p>
+    <input type="email" id="email" placeholder="Email (English only)" pattern="[a-zA-Z0-9@.]*" />
+    <input type="password" id="password" placeholder="Password (English only)" pattern="[a-zA-Z0-9]*" />
+    <button onclick="login()">Login</button>
+    <p style="margin-top:20px;">Don't have an account? <a href="register.html" style="color: white; text-decoration: underline;">Register here</a></p>
+
+    <script>
+        function login() {
+            const email = document.getElementById("email").value.trim().toLowerCase();
+            const password = document.getElementById("password").value.trim();
+
+            const users = JSON.parse(localStorage.getItem("users") || "{}");
+
+            if (users[email] && users[email].password === password) {
+                localStorage.setItem("user", email);
+                window.location.href = "home.html";
+            } else {
+                alert("Invalid email or password. Please try again or register.");
+            }
+        }
+    </script>
+</body>
+</html>

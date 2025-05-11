@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <title>جغرافيا - تصميم</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+    .category-block {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      max-width: 600px;
+      margin: auto;
+    }
+    .side-cards {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+    }
+    .point {
+      background-color: #d3d3d3;
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-size: 20px;
+      font-weight: bold;
+      color: darkred;
+      cursor: pointer;
+    }
+    .center-img {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: #e6f0f9;
+    }
+    .center-img img {
+      height: 200px;
+      width: auto;
+    }
+    .center-img .name {
+      background-color: #f26522;
+      color: white;
+      font-weight: bold;
+      padding: 10px;
+      width: 100%;
+    }
+  </style>
+</head>
+<body>
+
+<div class="category-block">
+  <div class="side-cards">
+    <div class="point" onclick="askQuestion(100)">100</div>
+    <div class="point" onclick="askQuestion(300)">300</div>
+    <div class="point" onclick="askQuestion(500)">500</div>
+  </div>
+
+  <div class="center-img">
+    <img src="جغرافيا.png" alt="جغرافيا" />
+    <div class="name">جغرافيا</div>
+  </div>
+
+  <div class="side-cards">
+    <div class="point" onclick="askQuestion(100)">100</div>
+    <div class="point" onclick="askQuestion(300)">300</div>
+    <div class="point" onclick="askQuestion(500)">500</div>
+  </div>
+</div>
+
+<script>
+  function askQuestion(points) {
+    alert("سؤال بقيمة " + points + " نقطة من فئة: جغرافيا");
+  }
+</script>
+
+</body>
+</html>
